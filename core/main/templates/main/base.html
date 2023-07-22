@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UltraSpa Spa and Salon | Home</title>
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
         }
 
         .jumbotron {
-            background: url('spa_img.jpg') center/cover no-repeat;
+            background: url("{% static 'img/spa_img.jpg' %}") center/cover no-repeat;
             /* background: url('oil_img.jpg') center/cover no-repeat; */
             height: 80vh;
         }
@@ -65,7 +65,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="img/massage_img.jpg" class="card-img-top" alt="Massage Service">
+                            <img src="{% static 'img/massage_img.jpg' %}" class="card-img-top" alt="Massage Service">
                             <div class="card-body">
                                 <h5 class="card-title">Massage</h5>
                                 <p class="card-text">Relax your body and mind with our soothing massage treatments.</p>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="img/facial_img2.jpg" class="card-img-top" alt="Facial Service">
+                            <img src="{% static 'img/facial_img2.jpg' %}" class="card-img-top" alt="Facial Service">
                             <div class="card-body">
                                 <h5 class="card-title">Facial</h5>
                                 <p class="card-text">Rejuvenate your skin with our specialized facial treatments.</p>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="img/mancure_img.jpg" class="card-img-top" alt="Manicure Service">
+                            <img src="{% static 'img/mancure_img.jpg' %}" class="card-img-top" alt="Manicure Service">
                             <div class="card-body">
                                 <h5 class="card-title">Manicure</h5>
                                 <p class="card-text">Pamper yourself with our expert manicure services.</p>
