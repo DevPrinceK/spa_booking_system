@@ -17,6 +17,7 @@
             /* background: url('oil_img.jpg') center/cover no-repeat; */
             height: 80vh;
         }
+        
     </style>
 </head>
 
@@ -48,12 +49,22 @@
         </div>
     </nav>
 
+    <!-- alerts -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <center>{{message}}</center>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
     <!-- Jumbotron / Hero Section -->
     <div class="jumbotron pt-4">
         <div class="container text-center text-white my-auto py-auto">
             <h1 class="display-4">Welcome to <span style="color: blueviolet;">UltraSpa</span> </h1>
             <p class="lead">Indulge in the ultimate relaxation experience</p>
-            <a href="#" class="btn btn-primary btn-lg">Book Now</a>
+            <a href="{% url 'main:appointment' %}" target="_blank" class="btn btn-primary btn-lg">Book Now</a>
         </div>
     </div>
 
@@ -90,6 +101,18 @@
                             </div>
                         </div>
                     </div>
+                    {% for service in services %}
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="{% if service.image %}{{service.image.url}}{% else %}{% static 'img/mancure_img.jpg' %}{% endif %}"
+                                class="card-img-top" alt="{{service.name}} Services">
+                            <div class="card-body">
+                                <h5 class="card-title">{{service.name}}</h5>
+                                <p class="card-text">{{service.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -113,22 +136,23 @@
     <section id="contact" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center">Contact Us</h2>
-            <form>
+            <form method="POST" action="{% url 'main:contact_us' %}">
+                {% csrf_token %}
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" required>
+                    <input type="text" name="name" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" name="email" class="form-control" id="email" required>
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone</label>
-                    <input type="text" class="form-control" id="phone" required>
+                    <input type="text" name="phone" class="form-control" id="phone" required>
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="4" required></textarea>
+                    <textarea class="form-control" name="message" id="message" rows="4" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -161,7 +185,7 @@
                                 <li class="li"> Access to Sauna, swimming pool and Steam Room</li>
                             </ul>
                             <p class="card-text">Price: $50</p>
-                            <a href="#" class="btn btn-primary">Book Now</a>
+                            <a href="{% url 'main:appointment' %}" target="_blank" class="btn btn-primary">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -184,7 +208,7 @@
                                 <li class="li">Access to Sauna, Steam Room, and Jacuzzi</li>
                             </ul>
                             <p class="card-text">Price: $100</p>
-                            <a href="#" class="btn btn-info">Book Now</a>
+                            <a href="{% url 'main:appointment' %}" target="_blank" class="btn btn-info">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -208,7 +232,7 @@
                                 <li class="li">Access to Sauna, Jacuzzi, and Pool</li>
                             </ul>
                             <p class="card-text">Price: $150</p>
-                            <a href="#" class="btn btn-success">Book Now</a>
+                            <a href="{% url 'main:appointment' %}" target="_blank" class="btn btn-success">Book Now</a>
                         </div>
                     </div>
                 </div>

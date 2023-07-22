@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraSpa Spa and Salon | Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .jumbotron {
+            background: url("{% static 'img/spa_img.jpg' %}") center/cover no-repeat;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">UltraSpa</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:base' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:base' %}#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:base' %}#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:base' %}#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- alerts -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <center>{{message}}</center>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Jumbotron / Hero Section -->
+    <div class="jumbotron pt-4 row" style="overflow-y: scroll;">
+        <section id="contact" class="col-12 col-md-6 mx-auto py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center">Book Appointment</h2>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="customer_name" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="customer_email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" name="customer_phone" class="form-control" id="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Service Type</label>
+                        <select name="service_type" class="form-control">
+                            <option value="---">Select Service Type</option>
+                            <option value="BASIC">BASIC</option>
+                            <option value="DELUXE">DELUXE</option>
+                            <option value="PREMIUM">PREMIUM</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="staff_id" class="form-label">Staff</label>
+                        <select name="staff_id" class="form-control">
+                            <option value="---">Select Staff</option>
+                            {% for staff in staffs %}
+                            <option value="{{staff.id}}">{{staff.name}} - {{staff.position}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="service" class="form-label">Service</label>
+                        <select name="service" class="form-control">
+                            <option value="---">Select Service</option>
+                            {% for service in services %}
+                            <option value="{{service.id}}">{{service.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" name="date" class="form-control" id="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="time" class="form-label">time</label>
+                        <input type="time" name="time" class="form-control" id="time" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#confirmationModal" id="openConfirmationModal">Submit</button>
+
+                </form>
+            </div>
+        </section>
+        <section>
+            <div class="my-5"></div>
+        </section>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p>&copy; 2023 UltraSpa. All rights reserved.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                <li class="list-inline-item"><a href="#">Terms of Service</a></li>
+                <li class="list-inline-item"><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Appointment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name:</strong> <span id="modalCustomerName"></span></p>
+                    <p><strong>Email:</strong> <span id="modalCustomerEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="modalCustomerPhone"></span></p>
+                    <p><strong>Service Type:</strong> <span id="modalServiceType"></span></p>
+                    <p><strong>Staff:</strong> <span id="modalStaff"></span></p>
+                    <p><strong>Service:</strong> <span id="modalService"></span></p>
+                    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Time:</strong> <span id="modalTime"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitAppointment">Confirm & Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+    </script>
+
+    <script>
+        document.getElementById("openConfirmationModal").addEventListener("click", function () {
+            // Get the selected values from the form
+            const customerName = document.getElementById("name").value;
+            const customerEmail = document.getElementById("email").value;
+            const customerPhone = document.getElementById("phone").value;
+            const serviceType = document.querySelector('select[name="service_type"]').value;
+            const staff = document.querySelector('select[name="staff_id"]').options[document.querySelector(
+                'select[name="staff_id"]').selectedIndex].text;
+            const service = document.querySelector('select[name="service"]').options[document.querySelector(
+                'select[name="service"]').selectedIndex].text;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+
+            // Set the selected values in the modal
+            document.getElementById("modalCustomerName").innerText = customerName;
+            document.getElementById("modalCustomerEmail").innerText = customerEmail;
+            document.getElementById("modalCustomerPhone").innerText = customerPhone;
+            document.getElementById("modalServiceType").innerText = serviceType;
+            document.getElementById("modalStaff").innerText = staff;
+            document.getElementById("modalService").innerText = service;
+            document.getElementById("modalDate").innerText = date;
+            document.getElementById("modalTime").innerText = time;
+
+            // Show the modal
+            const myModal = new bootstrap.Modal(document.getElementById('confirmationModal'), {});
+            myModal.show();
+        });
+
+        // Handle form submission
+        document.getElementById("submitAppointment").addEventListener("click", function () {
+            // Submit the form
+            document.querySelector("form").submit();
+        });
+    </script>
+
+</body>
+
+</html>
